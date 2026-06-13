@@ -1,0 +1,12 @@
+package project1;
+
+public class temp {
+		int a=101;
+		String b="hello";
+	temp(int ac, String b){
+		a=a;
+	}
+	public static void main(String[] args) {
+		
+	}
+	}

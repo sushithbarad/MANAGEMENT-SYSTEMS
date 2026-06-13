@@ -1,0 +1,6 @@
+INDEX VERSION 1.134+C:\Users\barad\Desktop\testj2ee\.metadata\.plugins\org.eclipse.jdt.core
+4234701056.index
+586300718.index
+2542359012.index
+1865797976.index
+3581163120.index

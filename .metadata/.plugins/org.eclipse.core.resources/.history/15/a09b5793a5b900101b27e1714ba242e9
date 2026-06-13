@@ -1,0 +1,129 @@
+package j2ee_test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class test {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test","root","root");
+			boolean opt = true;
+			while (opt) {
+				System.out.println("-----Employee Table-----\n1.Insert\n2.Update\n3.Find\n4.Delete\n5.FindAll\n6.Exit");
+				int ch = sc.nextInt();
+				switch (ch) {
+				
+				case 1 -> {
+					System.out.println("You have selected Insert");
+					int n=sc.nextInt();
+					
+					PreparedStatement ps=con.prepareStatement("insert into values(?,?,?,?,?,?,?)");
+					System.out.println("Please enter the following details\nEnter eid:\n");
+					int eid=sc.nextInt();
+					sc.nextLine();
+					System.out.println("Enter employee name:\n");
+					String ename=sc.nextLine();
+					System.out.println("Enter  employee salary:\n");
+					int esalary=sc.nextInt();
+					sc.nextLine();
+					System.out.println("Enter employee adress:\n");
+					String eadress=sc.nextLine();
+					System.out.println("Enter employee contact:\n");
+					String econtact=sc.nextLine();
+					System.out.println("Enter employee email:\n");
+					String email=sc.nextLine();
+					System.out.println("Enter employee password:\n");
+					String epassword=sc.nextLine();
+					ps.setInt(1, eid);
+					ps.setString(2, ename);
+					ps.setDouble(3, esalary);
+					ps.setString(4, eadress);
+					ps.setString(5, econtact);
+					ps.setString(6, email);
+					ps.setString(7, epassword);
+					ps.executeUpdate();
+					System.out.println("The entered data inserted into table succesfully");
+				}
+				
+				case 2 -> {
+					String new1=null;
+					double new2=0.0;
+					sc.nextLine();
+					
+					System.out.println("What coloumn you wanted to ubdate\n1.Name\n2.Salary\3.Address\n4.Contact\n5.Email\n6.Password");
+					String pre=sc.nextLine();
+					PreparedStatement ps=con.prepareStatement("update emp_details set "+pre+"=? where eid=?");
+					if(pre.equals("1") || pre.equals("3")||pre.equals("4")||pre.equals("5")||pre.equals("6")) {
+						System.out.println("enter the new value for column "+pre);
+						 new1=sc.nextLine();
+						 ps.setString(1, new1);
+					}
+					
+					if(pre.equals("2")) {
+						System.out.println("Enter the value which you want to update:\n"+pre);
+						 new2=sc.nextDouble();
+						 ps.setDouble(1, new2);
+					}
+					System.out.println("Please Enter the Employee ID:\n");
+					int id=sc.nextInt();
+					
+					ps.setInt(2, id);
+					ps.executeUpdate();
+					System.out.println("Your new data has updated successfully...");
+				}
+				
+				case 3 -> {
+					PreparedStatement ps=con.prepareStatement("select * from emp_details where eid=?");
+					System.out.println("enter the id for finding:");
+					int id=sc.nextInt();
+					ps.setInt(1, id);
+					ResultSet rs=ps.executeQuery();
+					while(rs.next()) {
+						System.out.println("eid="+rs.getInt("eid")+" ename= "+rs.getString("ename")+" salary= "+rs.getDouble("esal")+
+						" eadress= "+rs.getString("eadress")+" econtact= "+rs.getString("econtact")+" email= "+rs.getString("email")+" epassword= "+rs.getString("epassword"));
+					}
+					
+
+				}
+				case 4 -> {
+					System.out.println("Enter the Employee id for delete data:\n");
+					PreparedStatement ps=con.prepareStatement("delete from emp_details where eid=?");
+					int id=sc.nextInt();
+					ps.setInt(1, id);
+					ps.executeUpdate();
+					System.out.println(+id+"Employee data has deleted successfully");
+					
+
+				}
+				case 5 -> {
+					PreparedStatement ps=con.prepareStatement("select * from emp_details");
+					ResultSet rs=ps.executeQuery();
+					while(rs.next()) {
+						System.out.println("eid="+rs.getInt("eid")+" ename= "+rs.getString("ename")+" salary= "+rs.getDouble("esal")+
+						" eadress= "+rs.getString("eadress")+" contact= "+rs.getString("econtact")+" email= "+rs.getString("email")+" password= "+rs.getString("password"));
+					}
+
+				}
+				case 6 -> {
+					opt=false;
+
+				}
+				default->{
+					System.out.println("Invalid input Enter valid Input from 1-6 ");
+				}
+				}
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+
+}
